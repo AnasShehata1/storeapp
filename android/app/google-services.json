@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "177252625097",
+    "project_id": "itistore-815d0",
+    "storage_bucket": "itistore-815d0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:177252625097:android:28abcc34bccd437eafbb18",
+        "android_client_info": {
+          "package_name": "com.example.storeapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARkHtC_7b1DI5fqR5cj0QAPm1v8byOGbI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
