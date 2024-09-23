@@ -1,8 +1,5 @@
-import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:storeapp/firebase_options.dart';
 import 'views/add_product_view.dart';
 import 'views/cart_view.dart';
@@ -24,7 +21,7 @@ class StoreApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {
         SigninView.id: (context) => const SigninView(),
@@ -34,18 +31,7 @@ class StoreApp extends StatelessWidget {
         AddProductView.id: (context) => const AddProductView(),
         CartView.id: (context) => const CartView(),
       },
-      initialRoute: HomeView.id,
+      initialRoute: SplashView.id,
     );
-  }
-}
-
-Future<String> uploadImage(String path, XFile image) async {
-  try {
-    final ref = FirebaseStorage.instance.ref(path).child(image.path);
-    await ref.putFile(File(image.path));
-    final url = await ref.getDownloadURL();
-    return url;
-  } catch (e) {
-    return e.toString();
   }
 }

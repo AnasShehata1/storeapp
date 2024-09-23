@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -22,6 +23,7 @@ class _AddProductViewState extends State<AddProductView> {
   String? productName, price, url;
   File? image;
   bool isLoading = false;
+  GlobalKey<FormState> formKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -37,73 +39,86 @@ class _AddProductViewState extends State<AddProductView> {
           ),
           centerTitle: true,
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 25),
-                  width: 200,
-                  height: 200,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      image: DecorationImage(
-                          image: url == null
-                              ? const AssetImage(
-                                  'assets/images/image_not_available.png')
-                              : NetworkImage(url!),
-                          fit: BoxFit.fill)),
-                ),
-                const SizedBox(height: 25),
-                CustomTextField(
-                  hintText: 'Enter Product Name',
-                  onChange: (data) {
-                    productName = data;
-                  },
-                ),
-                const SizedBox(height: 15),
-                CustomTextField(
-                    hintText: 'Enter Price',
-                    inputType: TextInputType.number,
-                    onChange: (data) {
-                      price = data;
-                    }),
-                const SizedBox(height: 15),
-                MaterialButton(
-                  color: Colors.grey[300],
-                  onPressed: () {
-                    uploadImage();
-                  },
-                  child: const Text(
-                    'Upload Image',
-                    style: TextStyle(color: Colors.black),
+        body: Form(
+          key: formKey,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 25),
+                    width: 200,
+                    height: 200,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        image: DecorationImage(
+                            image: url == null
+                                ? const AssetImage(
+                                    kImageNotAvailable)
+                                : NetworkImage(url!),
+                            fit: BoxFit.fill)),
                   ),
-                ),
-                const SizedBox(height: 30),
-                CustomButton(
-                  text: 'Add Product',
-                  onTap: () async {
-                    isLoading = true;
-                    setState(() {});
-                    try {
-                      if (context.mounted) {
-                        snackBarMsg(context, 'Success!');
-                      }
-                      isLoading = false;
+                  const SizedBox(height: 25),
+                  CustomTextField(
+                    hintText: 'Enter Product Name',
+                    onChange: (data) {
+                      productName = data;
+                    },
+                  ),
+                  const SizedBox(height: 15),
+                  CustomTextField(
+                      hintText: 'Enter Price',
+                      inputType: TextInputType.number,
+                      onChange: (data) {
+                        price = data;
+                      }),
+                  const SizedBox(height: 15),
+                  MaterialButton(
+                    color: Colors.grey[300],
+                    onPressed: () {
+                      uploadImage();
+                    },
+                    child: const Text(
+                      'Upload Image',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  CustomButton(
+                    text: 'Add Product',
+                    onTap: () async {
+                      isLoading = true;
                       setState(() {});
-                    } catch (e) {
-                      log(e.toString());
-                      if (context.mounted) {
-                        snackBarMsg(
-                            context, 'Failed!  Please try again later.');
-                        isLoading = false;
-                        setState(() {});
+                      if (formKey.currentState!.validate()) {
+                        try {
+                          FirebaseFirestore.instance
+                              .collection('products')
+                              .add({
+                            'name': productName,
+                            'imageUrl': url,
+                            'price': price
+                          });
+                          if (context.mounted) {
+                            snackBarMsg(context, 'Success!');
+                          }
+                          isLoading = false;
+                          setState(() {});
+                          Navigator.pop(context);
+                        } catch (e) {
+                          log(e.toString());
+                          if (context.mounted) {
+                            snackBarMsg(
+                                context, 'Failed!  Please try again later.');
+                            isLoading = false;
+                            setState(() {});
+                          }
+                        }
                       }
-                    }
-                  },
-                )
-              ],
+                    },
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -125,28 +140,5 @@ class _AddProductViewState extends State<AddProductView> {
 
     setState(() {});
   }
-  // void pickImage() async {
-  //   var pickImage = await ImagePicker().pickImage(source: ImageSource.gallery);
-  //   setState(() {
-  //     image = pickImage;
-  //   });
-  // }
 
-  // void uploadImage() async{
-  //   FirebaseStorage storage = FirebaseStorage.instance;
-  //   storage.bucket = 'gs://itistore-815d0.appspot.com';
-  //   var ref = storage.ref().child(p.basename(image!.path));
-  //   var storageUploadTask = ref.putFile(image!);
-  //   var taskSnapShot = await storageUploadTask
-  // }
-  // Future<String> uploadImage() async {
-  //   try {
-  //     final ref = FirebaseStorage.instance.ref(path).child(image.path);
-  //     await ref.putFile(File(image.path));
-  //     final url = await ref.getDownloadURL();
-  //     return url;
-  //   } catch (e) {
-  //     return e.toString();
-  //   }
-  // }
 }
