@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:storeapp/constant.dart';
+import 'package:storeapp/helper/show_snack_bar.dart';
 import 'package:storeapp/models/cart_items_model.dart';
 import 'package:storeapp/models/product_model.dart';
 
@@ -62,7 +63,11 @@ class _CartViewState extends State<CartView> {
                 summaryRow('Total', total, isTotal: true),
                 const SizedBox(height: 16.0),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    snackBarMsg(context, 'Check Out');
+                    CartItemsModel.cartItemsList = [];
+                    Navigator.pop(context);
+                  },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(16.0),
                     backgroundColor: Colors.green,
