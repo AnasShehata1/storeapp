@@ -34,7 +34,7 @@ class StoreApp extends StatelessWidget {
         AddProductView.id: (context) => const AddProductView(),
         CartView.id: (context) => const CartView(),
       },
-      initialRoute: AddProductView.id,
+      initialRoute: HomeView.id,
     );
   }
 }

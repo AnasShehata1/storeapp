@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:storeapp/constant.dart';
 
 class CustomCard extends StatelessWidget {
   const CustomCard({
@@ -32,7 +33,7 @@ class CustomCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'title',
+                      'product name',
                       style: TextStyle(
                         color: Colors.black54,
                         fontSize: 16,
@@ -47,11 +48,12 @@ class CustomCard extends StatelessWidget {
                           style: TextStyle(color: Colors.black87, fontSize: 16),
                         ),
                         IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.favorite,
-                              color: Colors.red,
-                            ))
+                          onPressed: () {},
+                          icon: Icon(
+                            Icons.add,
+                            color: kPrimaryColor,
+                          ),
+                        ),
                       ],
                     )
                   ],

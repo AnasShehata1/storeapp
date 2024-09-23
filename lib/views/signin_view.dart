@@ -19,7 +19,7 @@ class SigninView extends StatefulWidget {
 }
 
 class _SigninViewState extends State<SigninView> {
- String? email;
+  String? email;
   String? password;
   GlobalKey<FormState> formKey = GlobalKey();
   bool isLoading = false;
@@ -29,7 +29,7 @@ class _SigninViewState extends State<SigninView> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: kPrimaryColor,
+      backgroundColor: kBackgroundColor,
       body: ModalProgressHUD(
         inAsyncCall: isLoading,
         child: Form(
@@ -118,7 +118,7 @@ class _SigninViewState extends State<SigninView> {
                         setState(() {});
                       }
                     },
-                  ),                 
+                  ),
                   SizedBox(height: height * 0.0197),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

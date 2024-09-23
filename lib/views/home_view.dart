@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:storeapp/views/add_product_view.dart';
 import 'package:storeapp/views/cart_view.dart';
 
 import '../constant.dart';
@@ -11,9 +12,9 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kPrimaryColor,
+      backgroundColor: kBackgroundColor,
       appBar: AppBar(
-        backgroundColor: kPrimaryColor,
+        backgroundColor: kBackgroundColor,
         centerTitle: true,
         title: const Text('New Trends'),
         actions: [
@@ -29,8 +30,16 @@ class HomeView extends StatelessWidget {
           )
         ],
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: kPrimaryColor,
+        onPressed: () {
+          Navigator.pushNamed(context, AddProductView.id);
+        },
+        label: const Text('Add'),
+        icon: const Icon(Icons.add),
+      ),
       body: GridView.builder(
-        itemCount: 6,
+        itemCount: 8,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 1.5,

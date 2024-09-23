@@ -30,7 +30,7 @@ class _RegisterViewState extends State<RegisterView> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: kPrimaryColor,
+      backgroundColor: kBackgroundColor,
       body: ModalProgressHUD(
         inAsyncCall: isLoading,
         child: Form(
