@@ -54,7 +54,7 @@ class _RegisterViewState extends State<RegisterView> {
                   const Row(
                     children: [
                       Text(
-                        'Sign Up',
+                        'Register',
                         style: TextStyle(color: Colors.black, fontSize: 28),
                       ),
                     ],
@@ -71,7 +71,7 @@ class _RegisterViewState extends State<RegisterView> {
                   ),
                   SizedBox(height: height * 0.0197),
                   CustomButton(
-                    text: 'SIGN UP',
+                    text: 'REGISTER',
                     onTap: () async {
                       if (formKey.currentState!.validate()) {
                         isLoading = true;

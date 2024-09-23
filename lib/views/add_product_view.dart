@@ -20,7 +20,6 @@ class _AddProductViewState extends State<AddProductView> {
 
   @override
   Widget build(BuildContext context) {
-    
     return ModalProgressHUD(
       inAsyncCall: isLoading,
       child: Scaffold(
@@ -28,7 +27,7 @@ class _AddProductViewState extends State<AddProductView> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           title: const Text(
-            'Update Product',
+            'Add Product',
             style: TextStyle(fontWeight: FontWeight.w600),
           ),
           centerTitle: true,
