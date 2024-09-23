@@ -29,11 +29,11 @@ class _RegisterViewState extends State<RegisterView> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      backgroundColor: kBackgroundColor,
-      body: ModalProgressHUD(
-        inAsyncCall: isLoading,
-        child: Form(
+    return ModalProgressHUD(
+      inAsyncCall: isLoading,
+      child: Scaffold(
+        backgroundColor: kBackgroundColor,
+        body: Form(
           key: formKey,
           child: SingleChildScrollView(
             child: Padding(

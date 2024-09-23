@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:storeapp/constant.dart';
+import 'package:storeapp/models/cart_items_model.dart';
+import 'package:storeapp/models/product_model.dart';
 
 class CartView extends StatefulWidget {
   const CartView({super.key});
@@ -10,15 +12,14 @@ class CartView extends StatefulWidget {
 }
 
 class _CartViewState extends State<CartView> {
-  List<int> quantities = [4, 2, 1, 5];
-  List<double> prices = [20.0, 6.0, 49.0, 15.0];
-  List<String> items = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
+  List<int> quantities = [1, 1, 1, 1, 1, 1];
   double shipping = 10.0;
-
+  List<ProductModel> productModelList = CartItemsModel.cartItemsList;
   double get subtotal {
     double sum = 0.0;
-    for (int i = 0; i < quantities.length; i++) {
-      sum += quantities[i] * prices[i];
+    for (int i = 0; i < productModelList.length; i++) {
+      double? parsedValue = double.tryParse(productModelList[i].pirce);
+      sum += quantities[i] * parsedValue!;
     }
     return sum;
   }
@@ -38,10 +39,16 @@ class _CartViewState extends State<CartView> {
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: items.length,
+              itemCount: productModelList.length,
               itemBuilder: (context, index) {
+                double? parsedValue =
+                    double.tryParse(productModelList[index].pirce);
                 return orderItem(
-                    items[index], quantities[index], prices[index], index);
+                    productModelList[index].name,
+                    quantities[index],
+                    parsedValue!,
+                    index,
+                    productModelList[index].imageUrl);
               },
             ),
           ),
@@ -73,12 +80,13 @@ class _CartViewState extends State<CartView> {
     );
   }
 
-  Widget orderItem(String itemName, int quantity, double price, int index) {
+  Widget orderItem(
+      String itemName, int quantity, double price, int index, String url) {
     return Card(
       color: kCartColor,
       margin: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 10.0),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(vertical: 12),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -89,13 +97,13 @@ class _CartViewState extends State<CartView> {
                   height: 50,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
-                      image: const DecorationImage(
-                          image: AssetImage(
-                            'assets/images/logo.png',
+                      image: DecorationImage(
+                          image: NetworkImage(
+                            url,
                           ),
                           fit: BoxFit.fill)),
                 ),
-                const SizedBox(width: 16.0),
+                const SizedBox(width: 10.0),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -114,26 +122,30 @@ class _CartViewState extends State<CartView> {
                       }
                     });
                   },
-                  icon: const Icon(Icons.remove),
+                  icon: const Icon(
+                    Icons.remove,
+                    size: 16,
+                  ),
                 ),
-                Text('$quantity', style: const TextStyle(fontSize: 16.0)),
+                Text('$quantity', style: const TextStyle(fontSize: 14.0)),
                 IconButton(
                   onPressed: () {
                     setState(() {
                       quantities[index]++;
                     });
                   },
-                  icon: const Icon(Icons.add),
+                  icon: const Icon(
+                    Icons.add,
+                    size: 16,
+                  ),
                 ),
-                const SizedBox(width: 8.0),
-                Text('\$${(price * quantity).toStringAsFixed(2)}',
-                    style: const TextStyle(fontSize: 16.0)),
+                Text('\$${(price * quantity).toStringAsFixed(1)}',
+                    style: const TextStyle(fontSize: 14.0)),
                 IconButton(
                   onPressed: () {
                     setState(() {
-                      items.removeAt(index);
                       quantities.removeAt(index);
-                      prices.removeAt(index);
+                      productModelList.removeAt(index);
                     });
                   },
                   icon: const Icon(Icons.delete, color: Colors.red),
@@ -156,7 +168,7 @@ class _CartViewState extends State<CartView> {
               style: TextStyle(
                   fontSize: isTotal ? 18.0 : 16.0,
                   fontWeight: isTotal ? FontWeight.bold : FontWeight.normal)),
-          Text('\$${amount.toStringAsFixed(2)}',
+          Text('\$${amount.toStringAsFixed(1)}',
               style: TextStyle(
                   fontSize: isTotal ? 18.0 : 16.0,
                   fontWeight: isTotal ? FontWeight.bold : FontWeight.normal)),

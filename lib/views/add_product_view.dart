@@ -54,8 +54,7 @@ class _AddProductViewState extends State<AddProductView> {
                         borderRadius: BorderRadius.circular(12),
                         image: DecorationImage(
                             image: url == null
-                                ? const AssetImage(
-                                    kImageNotAvailable)
+                                ? const AssetImage(kImageNotAvailable)
                                 : NetworkImage(url!),
                             fit: BoxFit.fill)),
                   ),
@@ -90,7 +89,7 @@ class _AddProductViewState extends State<AddProductView> {
                     onTap: () async {
                       isLoading = true;
                       setState(() {});
-                      if (formKey.currentState!.validate()) {
+                      if (formKey.currentState!.validate() && url != null) {
                         try {
                           FirebaseFirestore.instance
                               .collection('products')
@@ -114,6 +113,10 @@ class _AddProductViewState extends State<AddProductView> {
                             setState(() {});
                           }
                         }
+                      } else {
+                        isLoading = false;
+                        setState(() {});
+                        snackBarMsg(context, 'Image Is Required');
                       }
                     },
                   )
@@ -129,7 +132,7 @@ class _AddProductViewState extends State<AddProductView> {
   void uploadImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? imageGallery =
-        await picker.pickImage(source: ImageSource.camera);
+        await picker.pickImage(source: ImageSource.gallery);
     if (imageGallery != null) {
       image = File(imageGallery.path);
       var imageName = basename(imageGallery.path);
@@ -140,5 +143,4 @@ class _AddProductViewState extends State<AddProductView> {
 
     setState(() {});
   }
-
 }
